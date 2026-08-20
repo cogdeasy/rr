@@ -103,7 +103,7 @@ import {
               <span class="muted sub">{{ p.timeOnWingUpliftPercent }}% of {{ p.timeOnWingTargetPercent }}% target</span>
             </td>
             <td class="numeric">{{ p.aircraftOnGround }}</td>
-            <td><span class="badge" [class.green]="p.durabilityStatus === 'On track'">{{ p.durabilityStatus }}</span></td>
+            <td><span class="badge">{{ p.durabilityStatus }}</span></td>
           </tr>
         </tbody>
       </table>

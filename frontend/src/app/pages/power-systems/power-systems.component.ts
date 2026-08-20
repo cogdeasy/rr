@@ -181,7 +181,7 @@ import {
             <td>{{ b.country }}</td>
             <td class="numeric">{{ b.capacityMwh | number }}</td>
             <td>{{ b.gridConnection }}</td>
-            <td><span class="badge" [class.green]="b.status === 'Operational'">{{ b.status }}</span></td>
+            <td><span class="badge" [ngClass]="bessStatusClass(b.status)">{{ b.status }}</span></td>
           </tr>
         </tbody>
       </table>
@@ -258,6 +258,14 @@ export class PowerSystemsComponent implements OnInit {
       frameworkAgreement: false,
       notes: ''
     };
+  }
+
+  bessStatusClass(status: string): string {
+    switch (status.toLowerCase()) {
+      case 'operational': return 'green';
+      case 'under construction': return 'amber';
+      default: return 'blue';
+    }
   }
 
   private applyPipeline(pipeline: PipelineSummary): void {
