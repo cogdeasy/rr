@@ -73,7 +73,7 @@ public class PrognosticsRequest
     [Range(0, 40000)] public int CyclesSinceNew { get; set; }
     public string OperatingEnvironment { get; set; } = "Temperate";
     public bool HpTurbineBladeUpgraded { get; set; }
-    public double AverageCyclesPerMonth { get; set; } = 120;
+    [Range(1, 1000)] public double AverageCyclesPerMonth { get; set; } = 120;
 }
 
 public class PrognosticsResult
