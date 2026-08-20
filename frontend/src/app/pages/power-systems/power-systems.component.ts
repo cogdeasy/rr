@@ -209,7 +209,7 @@ export class PowerSystemsComponent implements OnInit {
   stageChart: BarDatum[] = [];
   segmentChart: BarDatum[] = [];
   stageOptions: OrderStage[] = ['Qualified', 'Proposal', 'Negotiation', 'Won', 'Delivered'];
-  segmentOptions = ['Power Generation', 'Governmental', 'Marine', 'Industrial'];
+  segmentOptions = ['Power generation', 'Governmental', 'Marine', 'Industrial'];
   regionOptions = ['Europe', 'North America', 'Asia Pacific', 'Middle East'];
   segmentFilter = '';
   stageFilter = '';
@@ -247,7 +247,7 @@ export class PowerSystemsComponent implements OnInit {
   private emptyDraft(): CreatePowerOrderRequest {
     return {
       customer: '',
-      segment: 'Power Generation',
+      segment: 'Power generation',
       application: '',
       product: '',
       region: 'Europe',

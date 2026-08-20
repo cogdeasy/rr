@@ -16,7 +16,7 @@ public class PowerSystemsService
 
     public IEnumerable<PowerOrder> GetOrders(string? segment = null, string? stage = null)
     {
-        IEnumerable<PowerOrder> query = _orders;
+        IEnumerable<PowerOrder> query = SnapshotOrders();
 
         if (!string.IsNullOrWhiteSpace(segment))
         {
@@ -31,8 +31,21 @@ public class PowerSystemsService
         return query.OrderByDescending(o => o.ValueGbpM).ToList();
     }
 
-    public PowerOrder? GetOrder(string id) =>
-        _orders.FirstOrDefault(o => o.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+    public PowerOrder? GetOrder(string id)
+    {
+        lock (_lock)
+        {
+            return _orders.FirstOrDefault(o => o.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private List<PowerOrder> SnapshotOrders()
+    {
+        lock (_lock)
+        {
+            return _orders.ToList();
+        }
+    }
 
     public PowerOrder CreateOrder(CreatePowerOrderRequest request)
     {
@@ -78,8 +91,9 @@ public class PowerSystemsService
 
     public object GetPipelineSummary()
     {
-        var won = _orders.Where(o => o.Stage is OrderStage.Won or OrderStage.Delivered).ToList();
-        var open = _orders.Where(o => o.Stage is OrderStage.Qualified or OrderStage.Proposal or OrderStage.Negotiation).ToList();
+        var orders = SnapshotOrders();
+        var won = orders.Where(o => o.Stage is OrderStage.Won or OrderStage.Delivered).ToList();
+        var open = orders.Where(o => o.Stage is OrderStage.Qualified or OrderStage.Proposal or OrderStage.Negotiation).ToList();
 
         return new
         {
@@ -88,10 +102,10 @@ public class PowerSystemsService
             byStage = Enum.GetValues<OrderStage>().Select(s => new
             {
                 stage = s.ToString(),
-                count = _orders.Count(o => o.Stage == s),
-                valueGbpM = _orders.Where(o => o.Stage == s).Sum(o => o.ValueGbpM)
+                count = orders.Count(o => o.Stage == s),
+                valueGbpM = orders.Where(o => o.Stage == s).Sum(o => o.ValueGbpM)
             }).ToList(),
-            bySegment = _orders.GroupBy(o => o.Segment).Select(g => new
+            bySegment = orders.GroupBy(o => o.Segment, StringComparer.OrdinalIgnoreCase).Select(g => new
             {
                 segment = g.Key,
                 valueGbpM = g.Sum(o => o.ValueGbpM),

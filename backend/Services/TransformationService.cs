@@ -73,7 +73,7 @@ public class TransformationService
         totalInitiatives = _initiatives.Count,
         delivered = _initiatives.Count(i => i.Status == "Delivered"),
         aheadOfPlan = _initiatives.Count(i => i.Status == "Ahead of plan"),
-        averageProgressPercent = Math.Round(_initiatives.Average(i => i.ProgressPercent), 1),
+        averageProgressPercent = Math.Round(_initiatives.Select(i => (double)i.ProgressPercent).DefaultIfEmpty(0).Average(), 1),
         byPillar = _pillars.Select(p => new
         {
             p.Key,

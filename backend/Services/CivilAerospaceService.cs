@@ -27,7 +27,7 @@ public class CivilAerospaceService
 
     public IEnumerable<ShopVisit> GetShopVisits(string? status = null, string? siteId = null, string? programme = null)
     {
-        IEnumerable<ShopVisit> query = _shopVisits;
+        IEnumerable<ShopVisit> query = SnapshotShopVisits();
 
         if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<ShopVisitStatus>(status, true, out var parsed))
         {
@@ -47,8 +47,21 @@ public class CivilAerospaceService
         return query.OrderBy(v => v.InductionDate).ToList();
     }
 
-    public ShopVisit? GetShopVisit(string id) =>
-        _shopVisits.FirstOrDefault(v => v.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+    public ShopVisit? GetShopVisit(string id)
+    {
+        lock (_lock)
+        {
+            return _shopVisits.FirstOrDefault(v => v.Id.Equals(id, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private List<ShopVisit> SnapshotShopVisits()
+    {
+        lock (_lock)
+        {
+            return _shopVisits.ToList();
+        }
+    }
 
     public ShopVisit CreateShopVisit(CreateShopVisitRequest request)
     {
@@ -132,20 +145,21 @@ public class CivilAerospaceService
 
     public object GetNetworkPerformance()
     {
-        var active = _shopVisits.Where(v => v.Status != ShopVisitStatus.Released).ToList();
+        var visits = SnapshotShopVisits();
+        var active = visits.Where(v => v.Status != ShopVisitStatus.Released).ToList();
 
         return new
         {
-            totalShopVisits = _shopVisits.Count,
+            totalShopVisits = visits.Count,
             activeShopVisits = active.Count,
             aogRisk = active.Count(v => v.IsAogRisk),
-            averageTurnaroundDays = _shopVisits.Count == 0 ? 0 : Math.Round(_shopVisits.Average(v => v.TurnaroundDays), 1),
-            averageCostGbpK = _shopVisits.Count == 0 ? 0 : Math.Round(_shopVisits.Average(v => v.CostEstimateGbpK), 0),
-            bladeUpgradeCoveragePercent = _shopVisits.Count == 0
+            averageTurnaroundDays = visits.Count == 0 ? 0 : Math.Round(visits.Average(v => v.TurnaroundDays), 1),
+            averageCostGbpK = visits.Count == 0 ? 0 : Math.Round(visits.Average(v => v.CostEstimateGbpK), 0),
+            bladeUpgradeCoveragePercent = visits.Count == 0
                 ? 0
-                : Math.Round(100.0 * _shopVisits.Count(v => v.HpTurbineBladeUpgrade) / _shopVisits.Count, 1),
+                : Math.Round(100.0 * visits.Count(v => v.HpTurbineBladeUpgrade) / visits.Count, 1),
             byStatus = Enum.GetValues<ShopVisitStatus>()
-                .Select(s => new { status = s.ToString(), count = _shopVisits.Count(v => v.Status == s) })
+                .Select(s => new { status = s.ToString(), count = visits.Count(v => v.Status == s) })
                 .ToList(),
             bySite = _sites.Select(site => new
             {
