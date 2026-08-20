@@ -15,11 +15,18 @@ interface NavItem {
     <header class="header">
       <div class="bar">
         <a class="brand" routerLink="/group" aria-label="Rolls-Royce">
-          <span class="roundel">
-            <span class="rule">ROLLS</span>
-            <span class="monogram">RR</span>
-            <span class="rule">ROYCE</span>
-          </span>
+          <svg class="roundel" viewBox="0 0 100 116" role="img" aria-label="Rolls-Royce">
+            <rect x="0" y="0" width="100" height="116" fill="#10069F" />
+            <rect x="5" y="5" width="90" height="106" fill="none" stroke="#fff" stroke-width="3" />
+            <text class="word" x="50" y="27">ROLLS</text>
+            <line x1="14" y1="34" x2="86" y2="34" stroke="#fff" stroke-width="2.5" />
+            <g class="monogram">
+              <text x="-35" y="76" transform="scale(-1,1)">R</text>
+              <text x="65" y="76">R</text>
+            </g>
+            <line x1="14" y1="85" x2="86" y2="85" stroke="#fff" stroke-width="2.5" />
+            <text class="word" x="50" y="104">ROYCE</text>
+          </svg>
           <span class="brand-text">Group Performance &amp; Transformation</span>
         </a>
         <div class="meta">
@@ -46,17 +53,13 @@ interface NavItem {
       gap: 1.5rem; padding: 0.9rem 2rem 0.75rem;
     }
     .brand { display: flex; align-items: center; gap: 1rem; }
-    .roundel {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      width: 46px; height: 52px; background: var(--rr-blue); color: #fff;
-      border: 2px solid #fff; box-shadow: 0 0 0 1px var(--rr-blue); padding: 3px 0;
+    .roundel { height: 54px; width: auto; display: block; }
+    .roundel .word {
+      fill: #fff; font-size: 19px; font-weight: 700; letter-spacing: 1px; text-anchor: middle;
     }
-    .rule {
-      font-size: 0.4rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1;
-      border-top: 1px solid rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.85);
-      padding: 1px 3px;
+    .roundel .monogram text {
+      fill: #fff; font-size: 42px; font-weight: 700; text-anchor: middle;
     }
-    .monogram { font-size: 0.95rem; font-weight: 700; letter-spacing: -0.06em; line-height: 1.1; padding: 1px 0; }
     .brand-text {
       font-size: 1.05rem; font-weight: 600; color: var(--rr-blue); letter-spacing: -0.01em;
     }
