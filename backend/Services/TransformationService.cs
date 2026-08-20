@@ -11,15 +11,14 @@ public class TransformationService
     private readonly List<PrincipalRisk> _risks = StrategySeed.Risks();
     private readonly object _lock = new();
 
-    public IEnumerable<StrategicPillar> GetPillars()
-    {
-        foreach (var pillar in _pillars)
+    public IEnumerable<StrategicPillar> GetPillars() =>
+        _pillars.Select(pillar => new StrategicPillar
         {
-            pillar.Initiatives = _initiatives.Where(i => i.PillarKey == pillar.Key).ToList();
-        }
-
-        return _pillars;
-    }
+            Key = pillar.Key,
+            Name = pillar.Name,
+            Description = pillar.Description,
+            Initiatives = _initiatives.Where(i => i.PillarKey == pillar.Key).ToList()
+        }).ToList();
 
     public IEnumerable<Initiative> GetInitiatives(string? pillarKey = null, string? division = null)
     {

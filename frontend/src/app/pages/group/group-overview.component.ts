@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 import { ApiService } from '../../shared/services/api.service';
-import { GroupSummary } from '../../shared/models/models';
+import { GroupSummary, GuidanceItem } from '../../shared/models/models';
 import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } from '../../shared/components/ui.components';
 
 @Component({
@@ -47,12 +47,13 @@ import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } fr
             </div>
             <div class="range">
               <div class="range-track">
-                <div class="range-band"></div>
-                <div class="range-marker" [style.left.%]="markerPosition(g.halfYearActual, g.upperBound)"></div>
+                <div class="range-band" [style.left.%]="position(g.lowerBound, g)"
+                  [style.width.%]="position(g.upperBound, g) - position(g.lowerBound, g)"></div>
+                <div class="range-marker" [style.left.%]="position(g.halfYearActual, g)"></div>
               </div>
               <div class="range-labels">
                 <span>H1 {{ g.halfYearActual }}{{ g.unit }}</span>
-                <span>previously {{ g.previous }}</span>
+                <span>guidance {{ g.lowerBound }}&ndash;{{ g.upperBound }}{{ g.unit }} &middot; previously {{ g.previous }}</span>
               </div>
             </div>
           </div>
@@ -122,7 +123,7 @@ import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } fr
     .metric { font-size: 0.875rem; font-weight: 500; }
     .range-track { position: relative; height: 8px; background: var(--rr-platinum); border-radius: 9999px; }
     .range-band {
-      position: absolute; left: 60%; right: 4%; top: 0; bottom: 0;
+      position: absolute; top: 0; bottom: 0;
       background: rgba(184,134,11,0.3); border-radius: 9999px;
     }
     .range-marker {
@@ -176,7 +177,9 @@ export class GroupOverviewComponent implements OnInit {
     });
   }
 
-  markerPosition(actual: number, upper: number): number {
-    return Math.max(0, Math.min(96, (actual / upper) * 100));
+  /** Positions a value on a 0 to upper-bound-plus-headroom track. */
+  position(value: number, guidance: GuidanceItem): number {
+    const scale = guidance.upperBound * 1.15;
+    return scale <= 0 ? 0 : Math.max(0, Math.min(100, (value / scale) * 100));
   }
 }
