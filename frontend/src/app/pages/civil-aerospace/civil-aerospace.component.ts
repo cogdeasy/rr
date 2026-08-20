@@ -123,7 +123,7 @@ import {
               <strong>{{ w.programme }} &middot; {{ w.modification }}</strong>
               <span class="muted sub">{{ w.phase }} &middot; target {{ w.targetDate }}</span>
             </div>
-            <span class="badge" [class.green]="w.status === 'In service'">{{ w.status }}</span>
+            <span class="badge" [ngClass]="workstreamStatusClass(w.status)">{{ w.status }}</span>
           </div>
           <p class="ws-desc">{{ w.description }}</p>
           <div class="ws-metrics">
@@ -187,6 +187,14 @@ export class CivilAerospaceComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  workstreamStatusClass(status: string): string {
+    const value = status.toLowerCase();
+    if (value.includes('complete') || value.includes('in service') || value.includes('proven')) {
+      return 'green';
+    }
+    return value.includes('on track') ? 'blue' : '';
   }
 
   upliftShare(p: EngineProgramme): number {
