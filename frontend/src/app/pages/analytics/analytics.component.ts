@@ -234,7 +234,12 @@ import { LineChartComponent, ProgressBarComponent } from '../../shared/component
   styles: [`
     .block { margin-bottom: 1.5rem; }
     .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
-    .form-group.check label { text-transform: none; letter-spacing: 0; font-size: 0.8125rem; display: flex; align-items: center; gap: 0.4rem; color: var(--rr-navy); }
+    .form-group.check { grid-column: 1 / -1; }
+    .form-group.check label {
+      text-transform: none; letter-spacing: 0; font-size: 0.8125rem; display: flex;
+      align-items: center; gap: 0.4rem; color: var(--rr-navy);
+    }
+    .form-group.check input { width: auto; flex: none; }
     .result { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--rr-border); }
     .result-head { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 0.85rem; }
     .lbl {

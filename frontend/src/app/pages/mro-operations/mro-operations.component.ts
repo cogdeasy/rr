@@ -159,8 +159,11 @@ const STATUS_FLOW: ShopVisitStatus[] =
               <button class="btn-outline danger" (click)="remove(v)">Delete</button>
             </td>
           </tr>
-          <tr *ngIf="!visits.length && !loading">
+          <tr *ngIf="!visits.length && !loading && !error">
             <td colspan="9" class="muted">No shop visits match the current filters.</td>
+          </tr>
+          <tr *ngIf="error">
+            <td colspan="9" class="muted">Shop visits are unavailable while the API is unreachable.</td>
           </tr>
         </tbody>
       </table>
