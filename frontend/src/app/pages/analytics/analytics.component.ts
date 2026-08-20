@@ -259,7 +259,7 @@ import { LineChartComponent, ProgressBarComponent } from '../../shared/component
 })
 export class AnalyticsComponent implements OnInit {
   programmes = ['Trent 1000', 'Trent 7000', 'Trent XWB-84', 'Trent XWB-97', 'Trent 900', 'Pearl 700'];
-  environments = ['Temperate', 'Desert', 'Coastal', 'High cycle short haul'];
+  environments = ['Temperate', 'Tropical', 'Desert', 'Coastal', 'High cycle short haul'];
 
   workscopeRequest: WorkscopePredictionRequest = {
     programme: 'Trent 1000',

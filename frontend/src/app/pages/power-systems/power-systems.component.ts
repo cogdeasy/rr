@@ -292,6 +292,8 @@ export class PowerSystemsComponent implements OnInit {
           this.saving = false;
           this.message = `${order.customer} added to the pipeline at £${order.valueGbpM}m.`;
           this.draft = this.emptyDraft();
+          this.segmentFilter = '';
+          this.stageFilter = '';
           this.reload();
           this.refreshPipeline();
         },

@@ -268,6 +268,8 @@ export class MroOperationsComponent implements OnInit {
         this.message = `${visit.engineSerialNumber} inducted at ${this.siteName(visit.siteId)} — ${visit.turnaroundDays} day estimated turnaround.`;
         const siteId = this.draft.siteId;
         this.draft = { ...this.emptyDraft(), siteId };
+        this.statusFilter = '';
+        this.siteFilter = '';
         this.reloadVisits();
         this.refreshNetwork();
       },
