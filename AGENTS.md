@@ -9,12 +9,15 @@ Platform for Rolls-Royce Group performance, divisional delivery and the transfor
 - **Backend**: ASP.NET Core 8 Web API (C#) on `http://localhost:5062`, Swagger at `http://localhost:5062/swagger`
 
 ## Branding
-- Primary colour: Navy (#001233)
-- Platinum background: (#F5F5F7)
-- Silver accents: (#C0C0C0)
-- Gold highlights: (#B8860B)
+Follows the rolls-royce.com brand system: white header carrying the blue RR roundel,
+Rolls-Royce blue (#10069F) navigation and headings, light platinum page background,
+pill-shaped buttons and deep blue gradients for hero panels.
+
+- Primary colour: Rolls-Royce blue (#10069F), with #0A0470 and #2C22C4 as the darker/lighter steps
+- Platinum background: (#F4F4F8)
+- Tint for badges and highlights: (#ECEBF7)
 - Gradients use the `gradient-rr` / `gradient-hero` CSS classes
-- Logo: ROLLS-ROYCE wordmark in the header component
+- Logo: RR roundel in the header component, above a horizontal blue top navigation
 
 ## Frontend Conventions
 - All components are standalone (no NgModules)

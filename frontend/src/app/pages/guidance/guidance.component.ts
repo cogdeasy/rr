@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { ApiService } from '../../shared/services/api.service';
 import { CapitalPosition, CashFlowLine, GuidanceItem } from '../../shared/models/models';
 import { KpiCardComponent, StateBlockComponent } from '../../shared/components/ui.components';
+import { formatUnit } from '../../shared/format';
 
 @Component({
   selector: 'app-guidance',
@@ -35,12 +36,12 @@ import { KpiCardComponent, StateBlockComponent } from '../../shared/components/u
           <div class="split">
             <div>
               <span class="lbl">H1 2026 delivered</span>
-              <span class="big">{{ g.halfYearActual }}{{ g.unit }}</span>
+              <span class="big">{{ amount(g.halfYearActual, g.unit, 3) }}</span>
             </div>
             <div>
               <span class="lbl">Implied H2</span>
               <span class="big">
-                {{ (g.lowerBound - g.halfYearActual) | number: '1.1-2' }}&ndash;{{ (g.upperBound - g.halfYearActual) | number: '1.1-2' }}{{ g.unit }}
+                {{ amount(g.lowerBound - g.halfYearActual, g.unit, 2) }}&ndash;{{ amount(g.upperBound - g.halfYearActual, g.unit, 2) }}
               </span>
             </div>
             <div>
@@ -149,6 +150,8 @@ import { KpiCardComponent, StateBlockComponent } from '../../shared/components/u
   `]
 })
 export class GuidanceComponent implements OnInit {
+  amount = formatUnit;
+
   guidance: GuidanceItem[] = [];
   capital?: CapitalPosition;
   cashFlow: CashFlowLine[] = [];

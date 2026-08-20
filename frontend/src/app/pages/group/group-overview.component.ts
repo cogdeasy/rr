@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../shared/services/api.service';
 import { GroupSummary, GuidanceItem } from '../../shared/models/models';
 import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } from '../../shared/components/ui.components';
+import { formatUnit } from '../../shared/format';
 
 @Component({
   selector: 'app-group-overview',
@@ -52,8 +53,8 @@ import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } fr
                 <div class="range-marker" [style.left.%]="position(g.halfYearActual, g)"></div>
               </div>
               <div class="range-labels">
-                <span>H1 {{ g.halfYearActual }}{{ g.unit }}</span>
-                <span>guidance {{ g.lowerBound }}&ndash;{{ g.upperBound }}{{ g.unit }} &middot; previously {{ g.previous }}</span>
+                <span>H1 {{ amount(g.halfYearActual, g.unit, 3) }}</span>
+                <span>guidance {{ amount(g.lowerBound, g.unit) }}&ndash;{{ amount(g.upperBound, g.unit) }} &middot; previously {{ g.previous }}</span>
               </div>
             </div>
           </div>
@@ -124,7 +125,7 @@ import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } fr
     .range-track { position: relative; height: 8px; background: var(--rr-platinum); border-radius: 9999px; }
     .range-band {
       position: absolute; top: 0; bottom: 0;
-      background: rgba(184,134,11,0.3); border-radius: 9999px;
+      background: rgba(16,6,159,0.28); border-radius: 9999px;
     }
     .range-marker {
       position: absolute; top: -3px; width: 3px; height: 14px; background: var(--rr-navy); border-radius: 2px;
@@ -150,6 +151,8 @@ import { BarChartComponent, BarDatum, KpiCardComponent, StateBlockComponent } fr
   `]
 })
 export class GroupOverviewComponent implements OnInit {
+  amount = formatUnit;
+
   summary?: GroupSummary;
   cashFlowChart: BarDatum[] = [];
   loading = true;

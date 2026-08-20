@@ -94,8 +94,8 @@ export interface BarDatum {
     .row { display: grid; grid-template-columns: 150px 1fr 82px; align-items: center; gap: 0.75rem; }
     .lbl { font-size: 0.75rem; color: var(--rr-navy); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .track { height: 14px; background: var(--rr-platinum); border-radius: 3px; overflow: hidden; }
-    .fill { height: 100%; background: linear-gradient(90deg, #001233, #002855); border-radius: 3px; transition: width 0.4s ease; }
-    .fill.gold { background: linear-gradient(90deg, #B8860B, #D4A017); }
+    .fill { height: 100%; background: linear-gradient(90deg, #10069F, #2C22C4); border-radius: 3px; transition: width 0.4s ease; }
+    .fill.gold { background: linear-gradient(90deg, #2C22C4, #6E67DC); }
     .val { font-size: 0.75rem; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
     .empty { font-size: 0.8125rem; color: var(--rr-muted); }
   `]
@@ -117,8 +117,8 @@ export class BarChartComponent {
   template: `
     <svg class="line-chart" viewBox="0 0 320 140" preserveAspectRatio="none" role="img" [attr.aria-label]="ariaLabel">
       <line *ngFor="let g of gridLines" x1="0" [attr.y1]="g" x2="320" [attr.y2]="g" stroke="#E5E7EB" stroke-width="1" />
-      <polyline [attr.points]="points" fill="none" stroke="#001233" stroke-width="2.5" />
-      <polyline [attr.points]="areaPoints" fill="rgba(0,18,51,0.07)" stroke="none" />
+      <polyline [attr.points]="points" fill="none" stroke="#10069F" stroke-width="2.5" />
+      <polyline [attr.points]="areaPoints" fill="rgba(16,6,159,0.08)" stroke="none" />
     </svg>
   `,
   styles: [`
