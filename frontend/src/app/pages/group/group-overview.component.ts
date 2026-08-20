@@ -164,8 +164,9 @@ export class GroupOverviewComponent implements OnInit {
     this.api.getGroupSummary().subscribe({
       next: summary => {
         this.summary = summary;
+        const divisionNames = new Set(summary.divisions.map(d => d.name));
         this.cashFlowChart = summary.tradingCashFlow
-          .filter(line => !line.isTotal)
+          .filter(line => !line.isTotal && divisionNames.has(line.label))
           .map(line => ({
             label: line.label,
             value: Math.abs(line.currentPeriod),
